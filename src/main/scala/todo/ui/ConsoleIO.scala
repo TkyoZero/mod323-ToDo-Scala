@@ -1,6 +1,6 @@
 package todo.ui
 
-import todo.model.*
+import todo.model.TodoModel
 
 import java.time.LocalDate
 import scala.annotation.tailrec
