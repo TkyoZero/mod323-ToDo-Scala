@@ -2,9 +2,7 @@ package todo.model
 
 import java.time.LocalDate
 
-/**
- * The category of a task
- */
+// The category of a task
 sealed trait Category
 object Category {
   case object Work extends Category
@@ -26,9 +24,7 @@ object Category {
 }
 
 
-/**
- * The status of a task
- */
+// The status of a task
 sealed trait Status
 object Status {
   case object Open extends Status
@@ -50,9 +46,7 @@ object Status {
 }
 
 
-/**
- * Represents a task with all required properties
- */
+// A task with all required properties
 case class Task(
                  id: Int,
                  title: String,
@@ -62,3 +56,34 @@ case class Task(
                  status: Status
                )
 
+// Helper functions for Task
+object Task {
+  // Creates a new task with default status as Open
+  def create(
+              id: Int,
+              title: String,
+              description: String,
+              category: Category,
+              deadline: LocalDate
+            ): Task = Task(id, title, description, category, deadline, Status.Open)
+
+  // Updates the status of a task
+  def updateStatus(task: Task, newStatus: Status): Task =
+    task.copy(status = newStatus)
+
+  // Updates the properties of a task
+  def update(
+              task: Task,
+              title: Option[String] = None,
+              description: Option[String] = None,
+              category: Option[Category] = None,
+              deadline: Option[LocalDate] = None,
+              status: Option[Status] = None
+            ): Task = task.copy(
+    title = title.getOrElse(task.title),
+    description = description.getOrElse(task.description),
+    category = category.getOrElse(task.category),
+    deadline = deadline.getOrElse(task.deadline),
+    status = status.getOrElse(task.status)
+  )
+}
