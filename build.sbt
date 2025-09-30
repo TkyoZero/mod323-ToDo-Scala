@@ -1,8 +1,3 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
-
-ThisBuild / scalaVersion := "3.3.6"
-
-lazy val root = (project in file("."))
-  .settings(
-    name := "mod323-ToDo-Scala"
-  )
+name := "mod323-ToDo-Scala"
+version := "1.0.0"
+scalaVersion := "2.13.10"
