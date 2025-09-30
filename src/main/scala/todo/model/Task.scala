@@ -1,7 +1,9 @@
 package todo.model
 
+import java.time.LocalDate
+
 /**
- * Represents the category of a task
+ * The category of a task
  */
 sealed trait Category
 object Category {
@@ -22,3 +24,41 @@ object Category {
     case Private => "private"
   }
 }
+
+
+/**
+ * The status of a task
+ */
+sealed trait Status
+object Status {
+  case object Open extends Status
+  case object InWork extends Status
+  case object Finished extends Status
+
+  def fromString(str: String): Option[Status] = str.toLowerCase match {
+    case "open" => Some(Open)
+    case "in-work" | "inwork" => Some(InWork)
+    case "finished" => Some(Finished)
+    case _ => None
+  }
+
+  def toString(status: Status): String = status match {
+    case Open => "open"
+    case InWork => "in-work"
+    case Finished => "finished"
+  }
+}
+
+
+/**
+ * Represents a task with all required properties
+ */
+case class Task(
+                 id: Int,
+                 title: String,
+                 description: String,
+                 category: Category,
+                 deadline: LocalDate,
+                 status: Status
+               )
+
