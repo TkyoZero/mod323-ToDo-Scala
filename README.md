@@ -2,9 +2,7 @@
 
 ## Structure
 ````
-todo-app/
-├── README.md
-├── build.sbt
+mod323-ToDo-Scala/
 ├── src/
 │   └── main/
 │       └── scala/
@@ -15,4 +13,6 @@ todo-app/
 │               └── model/                  # Pure data models only
 │                   ├── TodoModel.scala
 │                   └── Task.scala
+├── build.sbt
+└── README.md
 ````
