@@ -75,7 +75,7 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
         task.description.toLowerCase.contains(lowerSearchTerm)
     }.sortBy(_.id)
   }
-  
+
   def getStats: TaskStats = {
     val total = tasks.length
     val open = tasks.count(_.status == Status.Open)
