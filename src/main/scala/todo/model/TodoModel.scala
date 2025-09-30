@@ -30,4 +30,49 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
     }
     TodoModel(updatedTasks, nextId)
   }
+
+  def updateTaskStatus(id: Int, status: Status): TodoModel = {
+    updateTask(id, status = Some(status))
+  }
+
+  def removeTask(id: Int): TodoModel = {
+    TodoModel(tasks.filterNot(_.id == id), nextId)
+  }
+
+  def getTask(id: Int): Option[Task] = {
+    tasks.find(_.id == id)
+  }
+
+  def getAllTasks: List[Task] = {
+    tasks.sortBy(_.id)
+  }
+
+  def getTasksByCategory(category: Category): List[Task] = {
+    tasks.filter(_.category == category).sortBy(_.id)
+  }
+
+  def getTasksByStatus(status: Status): List[Task] = {
+    tasks.filter(_.status == status).sortBy(_.id)
+  }
+
+  def getOverdueTasks: List[Task] = {
+    val today = LocalDate.now()
+    tasks.filter(task => task.deadline.isBefore(today) && task.status != Status.Finished).sortWith((a: Task, b: Task) => a.deadline.isBefore(b.deadline))
+  }
+
+  def getTasksDueWithin(days: Int): List[Task] = {
+    val futureDate = LocalDate.now().plusDays(days)
+    tasks.filter(task =>
+      !task.deadline.isAfter(futureDate) &&
+        task.status != Status.Finished
+    ).sortWith((a: Task, b: Task) => a.deadline.isBefore(b.deadline))
+  }
+
+  def searchTasks(searchTerm: String): List[Task] = {
+    val lowerSearchTerm = searchTerm.toLowerCase
+    tasks.filter { task =>
+      task.title.toLowerCase.contains(lowerSearchTerm) ||
+        task.description.toLowerCase.contains(lowerSearchTerm)
+    }.sortBy(_.id)
+  }
 }
