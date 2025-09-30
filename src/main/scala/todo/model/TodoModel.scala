@@ -76,3 +76,29 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
     }.sortBy(_.id)
   }
 }
+
+object TodoModel {
+  /**
+   * Creates an empty TodoModel
+   */
+  def empty: TodoModel = TodoModel(List.empty, 1)
+
+  /**
+   * Creates a TodoModel with initial tasks
+   */
+  def withTasks(tasks: List[Task]): TodoModel = {
+    val maxId = if (tasks.isEmpty) 0 else tasks.map(_.id).max
+    TodoModel(tasks, maxId + 1)
+  }
+}
+
+/**
+ * Case class to hold task statistics
+ */
+case class TaskStats(
+                      total: Int,
+                      open: Int,
+                      inWork: Int,
+                      finished: Int,
+                      overdue: Int
+                    )
