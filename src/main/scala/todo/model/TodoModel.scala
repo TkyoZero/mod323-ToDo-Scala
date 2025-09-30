@@ -75,6 +75,16 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
         task.description.toLowerCase.contains(lowerSearchTerm)
     }.sortBy(_.id)
   }
+  
+  def getStats: TaskStats = {
+    val total = tasks.length
+    val open = tasks.count(_.status == Status.Open)
+    val inWork = tasks.count(_.status == Status.InWork)
+    val finished = tasks.count(_.status == Status.Finished)
+    val overdue = getOverdueTasks.length
+
+    TaskStats(total, open, inWork, finished, overdue)
+  }
 }
 
 object TodoModel {
