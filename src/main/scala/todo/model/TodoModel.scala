@@ -55,11 +55,13 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
     tasks.filter(_.status == status).sortBy(_.id)
   }
 
+  // Tasks with deadline before today and not finished, sorted by deadline
   def getOverdueTasks: List[Task] = {
     val today = LocalDate.now()
     tasks.filter(task => task.deadline.isBefore(today) && task.status != Status.Finished).sortWith((a: Task, b: Task) => a.deadline.isBefore(b.deadline))
   }
 
+  // Tasks due within the given number of days, excluding finished, sorted by deadline
   def getTasksDueWithin(days: Int): List[Task] = {
     val futureDate = LocalDate.now().plusDays(days)
     tasks.filter(task =>
@@ -88,23 +90,18 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
 }
 
 object TodoModel {
-  /**
-   * Creates an empty TodoModel
-   */
+
+  // Creates an empty TodoModel
   def empty: TodoModel = TodoModel(List.empty, 1)
 
-  /**
-   * Creates a TodoModel with initial tasks
-   */
+  // Creates a TodoModel with tasks, setting nextId after the max task id
   def withTasks(tasks: List[Task]): TodoModel = {
     val maxId = if (tasks.isEmpty) 0 else tasks.map(_.id).max
     TodoModel(tasks, maxId + 1)
   }
 }
 
-/**
- * Case class to hold task statistics
- */
+// Class to hold task statistics
 case class TaskStats(
                       total: Int,
                       open: Int,
