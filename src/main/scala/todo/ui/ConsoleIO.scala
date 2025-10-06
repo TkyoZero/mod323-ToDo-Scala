@@ -89,7 +89,7 @@ object ConsoleIO {
 
   private def listToDoTasks(): Unit = {
     println("\n--- ToDo Tasks (Open or In Work) ---")
-    println("Duewinthin how many days? (0 for all): ")
+    println("Due within how many days? (0 for all): ")
     val days = Try(StdIn.readLine().toInt).getOrElse(0)
     val todo = model.getTasksDueWithin(days)
 
