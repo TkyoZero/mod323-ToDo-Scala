@@ -1,5 +1,7 @@
 package todo.model
 
+import todo.model.{Category, Status, Task}
+
 import java.time.LocalDate
 
 case class TodoModel(tasks: List[Task], nextId: Int) {

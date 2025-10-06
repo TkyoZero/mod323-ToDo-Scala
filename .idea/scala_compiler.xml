@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ScalaCompilerConfiguration">
-    <option name="separateProdTestSources" value="true" />
-    <profile name="sbt 1" modules="mod323-ToDo-Scala,mod323-ToDo-Scala.main,mod323-ToDo-Scala.test,mod323-todo-scala_652,mod323-todo-scala_652.main,mod323-todo-scala_652.test" />
-  </component>
-</project>
