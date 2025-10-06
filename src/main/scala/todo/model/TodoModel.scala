@@ -15,7 +15,7 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
     TodoModel(newTask :: tasks, nextId + 1)
   }
 
-  def updateTask(
+  private def updateTask(
                   id: Int,
                   title: Option[String] = None,
                   description: Option[String] = None,
@@ -60,16 +60,21 @@ case class TodoModel(tasks: List[Task], nextId: Int) {
   // Tasks with deadline before today and not finished, sorted by deadline
   def getOverdueTasks: List[Task] = {
     val today = LocalDate.now()
-    tasks.filter(task => task.deadline.isBefore(today) && task.status != Status.Finished).sortWith((a: Task, b: Task) => a.deadline.isBefore(b.deadline))
+    tasks.filter(task => task.deadline.isBefore(today) && task.status != Status.Finished)
+      .sortBy(_.deadline)
   }
 
   // Tasks due within the given number of days, excluding finished, sorted by deadline
   def getTasksDueWithin(days: Int): List[Task] = {
+    if (days <= 0) {
+      return tasks.filter(_.status != Status.Finished).sortBy(_.deadline)
+    }
+
     val futureDate = LocalDate.now().plusDays(days)
     tasks.filter(task =>
       !task.deadline.isAfter(futureDate) &&
         task.status != Status.Finished
-    ).sortWith((a: Task, b: Task) => a.deadline.isBefore(b.deadline))
+    ).sortBy(_.deadline)
   }
 
   def searchTasks(searchTerm: String): List[Task] = {

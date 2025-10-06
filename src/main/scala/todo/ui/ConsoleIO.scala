@@ -22,11 +22,12 @@ object ConsoleIO {
     println("\n--- Main Menu ---")
     println("1. Add task")
     println("2. List all tasks")
-    println("3. Update task status")
-    println("4. Remove task")
-    println("5. Search tasks")
-    println("6. Show statistics")
-    println("7. Show overdue tasks")
+    println("3. List ToDo tasks")
+    println("4. Update task status")
+    println("5. Remove task")
+    println("6. Search tasks")
+    println("7. Show statistics")
+    println("8. Show overdue tasks")
     println("0. Exit")
 
     print("Choose an option: ")
@@ -34,11 +35,12 @@ object ConsoleIO {
     StdIn.readLine() match {
       case "1" => addTaskMenu(); mainMenu()
       case "2" => listTasks(); mainMenu()
-      case "3" => updateStatusMenu(); mainMenu()
-      case "4" => removeTaskMenu(); mainMenu()
-      case "5" => searchTasksMenu(); mainMenu()
-      case "6" => showStats(); mainMenu()
-      case "7" => showOverdueTasks(); mainMenu()
+      case "3" => listToDoTasks(); mainMenu()
+      case "4" => updateStatusMenu(); mainMenu()
+      case "5" => removeTaskMenu(); mainMenu()
+      case "6" => searchTasksMenu(); mainMenu()
+      case "7" => showStats(); mainMenu()
+      case "8" => showOverdueTasks(); mainMenu()
       case "0" => println("Goodbye!")
       case _ =>
         println("Invalid option, please try again.")
@@ -82,6 +84,20 @@ object ConsoleIO {
       println("No tasks found.")
     } else {
       tasks.map(formatTask).foreach(println)
+    }
+  }
+
+  private def listToDoTasks(): Unit = {
+    println("\n--- ToDo Tasks (Open or In Work) ---")
+    println("Duewinthin how many days? (0 for all): ")
+    val days = Try(StdIn.readLine().toInt).getOrElse(0)
+    val todo = model.getTasksDueWithin(days)
+
+    if (todo.isEmpty) {
+      println("No ToDo tasks found.")
+    } else {
+      println(s"You have ${todo.length} ToDo task(s):")
+      todo.map(formatTask).foreach(println)
     }
   }
 
