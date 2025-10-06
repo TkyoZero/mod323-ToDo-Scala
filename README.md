@@ -16,3 +16,27 @@ mod323-ToDo-Scala/
 ├── build.sbt
 └── README.md
 ````
+
+----
+
+## Features
+- Add, update, and remove tasks
+- Search tasks by title or descriptio
+- Filter by status (Open, In Work, Finished
+- Track tasks by category (Work, School, Private
+- View statistics and overdue task
+- Set deadlines for tasks
+---
+## Quick Start
+
+Clone and compile:
+```bash
+sbt compile
+```
+
+Run the application:
+```bash
+sbt run
+```
+
+Follow the menu to manage your tasks!
