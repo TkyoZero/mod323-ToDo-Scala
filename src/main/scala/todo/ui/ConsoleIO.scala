@@ -1,6 +1,7 @@
 package todo.ui
 
-import todo.model.TodoModel
+import todo.model._
+
 import java.time.LocalDate
 import scala.annotation.tailrec
 import scala.io.StdIn
@@ -45,16 +46,67 @@ object ConsoleIO {
     }
   }
 
-  private def addTaskMenu(): Unit = {
+  private def addTaskMenu(): Unit = {    println("\n--- Add New Task ---")
 
+    print("Title: ")
+    val title = StdIn.readLine()
+
+    print("Description: ")
+    val description = StdIn.readLine()
+
+    print("Category (work/school/private): ")
+    val category = Category.fromString(StdIn.readLine()) match {
+      case Some(cat) => cat
+      case None =>
+        println("Invalid category, using 'private'")
+        Category.Private
+    }
+
+    print("Deadline (YYYY-MM-DD): ")
+    val deadline = Try(LocalDate.parse(StdIn.readLine())) match {
+      case Success(date) => date
+      case Failure(_) =>
+        println("Invalid date, using today's date")
+        LocalDate.now()
+    }
+
+    model = model.addTask(title, description, category, deadline)
+    println(s"Task added successfully! (ID: ${model.nextId - 1})")
   }
 
   private def listTasks(): Unit = {
+    println("\n--- All Tasks ---")
+    val tasks = model.getAllTasks
 
+    if (tasks.isEmpty) {
+      println("No tasks found.")
+    } else {
+      tasks.map(formatTask).foreach(println)
+    }
   }
 
   private def updateStatusMenu(): Unit = {
+    println("\n--- Update Task Status ---")
 
+    print("Task ID: ")
+    val id = Try(StdIn.readLine().toInt).getOrElse(-1)
+
+    model.getTask(id) match {
+      case Some(task) =>
+        println(s"Current task: ${formatTask(task)}")
+        println("New status (open/in-work/finished): ")
+
+        Status.fromString(StdIn.readLine()) match {
+          case Some(newStatus) =>
+            model = model.updateTaskStatus(id, newStatus)
+            println("Task status updated!")
+          case None =>
+            println("Invalid status")
+        }
+
+      case None =>
+        println("Task not found")
+    }
   }
 
   private def removeTaskMenu(): Unit = {
@@ -71,6 +123,12 @@ object ConsoleIO {
 
   private def showOverdueTasks(): Unit = {
 
+  }
+
+  private def formatTask(task: Task): String = {
+    val statusStr = Status.toString(task.status)
+    val categoryStr = Category.toString(task.category)
+    s"[ID: ${task.id}] ${task.title} - ${task.description} ($categoryStr, $statusStr, due: ${task.deadline})"
   }
 
 }
