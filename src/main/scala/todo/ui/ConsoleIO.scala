@@ -110,19 +110,58 @@ object ConsoleIO {
   }
 
   private def removeTaskMenu(): Unit = {
+    println("\n--- Remove Task ---")
 
+    print("Task ID to remove: ")
+    val id = Try(StdIn.readLine().toInt).getOrElse(-1)
+
+    model.getTask(id) match {
+      case Some(task) =>
+        println(s"Removing: ${formatTask(task)}")
+        model = model.removeTask(id)
+        println("Task removed!")
+      case None =>
+        println("Task not found")
+    }
   }
 
   private def searchTasksMenu(): Unit = {
+    println("\n--- Search Tasks ---")
 
+    print("Search term: ")
+    val term = StdIn.readLine()
+
+    val results = model.searchTasks(term)
+
+    if (results.isEmpty) {
+      println("No tasks found matching your search.")
+    } else {
+      println(s"Found ${results.length} task(s):")
+      results.map(formatTask).foreach(println)
+    }
   }
 
   private def showStats(): Unit = {
+    println("\n--- Statistics ---")
+    val stats = model.getStats
 
+    println(s"Total tasks: ${stats.total}")
+    println(s"Open: ${stats.open}")
+    println(s"In work: ${stats.inWork}")
+    println(s"Finished: ${stats.finished}")
+    println(s"Overdue: ${stats.overdue}")
   }
 
   private def showOverdueTasks(): Unit = {
+    println("\n--- Overdue Tasks ---")
+    val overdue = model.getOverdueTasks
 
+    if (overdue.isEmpty) {
+      println("No overdue tasks! Great job!")
+    } else {
+      println(s"You have ${overdue.length} overdue task(s):")
+      overdue.map(formatTask).foreach(println)
+    }
   }
 
   private def formatTask(task: Task): String = {
