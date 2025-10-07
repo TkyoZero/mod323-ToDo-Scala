@@ -1,4 +1,7 @@
 # ToDo with Scala
+## Members
+- Jussif Abdel-Rahman
+- Tenzin Tobatsang
 
 ## Structure
 ````
